@@ -2,7 +2,7 @@
 
 var viewRenderMaker = function (config) {
     function log(message) {
-        document.querySelector('#logger-container').innerHTML += message + '<br/>';
+        document.querySelector('#logger-container').innerHTML = message;
     }
 
     function createTableCell(cell, width, height, fontSize) {
@@ -37,14 +37,24 @@ var viewRenderMaker = function (config) {
         }
     }
 
+    function removeChildren(parent) {
+        while (parent.hasChildNodes()) {
+            parent.removeChild(parent.lastChild);
+        }
+    }
+
     function render(grid) {
+        var container = document.querySelector('#grid-container');
+        removeChildren(container);
+        log('');
+
         var tbl = document.createElement('table');
         var tr;
         var td;
         var tdWidth = Math.round((1 / grid[0].length) * 100);
         var tdHeight = Math.round((1 / grid.length) * 100);
 
-        var fontSize = Math.round(config.boardWidth / grid[0].length);
+        var fontSize = Math.round(config.boardWidth / grid[0].length) * 0.8;
 
         grid.forEach(function (row) {
             tr = document.createElement('tr');
@@ -57,7 +67,7 @@ var viewRenderMaker = function (config) {
             tbl.appendChild(tr);
         });
 
-        document.querySelector('#grid-container').appendChild(tbl);
+        container.appendChild(tbl);
     }
 
     return {

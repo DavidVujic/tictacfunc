@@ -9,23 +9,23 @@ var gameLogicMaker = function () {
         return val - 1;
     }
 
-    function checkDiagonal(grid, cell, moveCell, moveRow) {
+    function same(val) {
+        return val;
+    }
+
+    function findEquals(grid, cell, moveCell, moveRow) {
         function isInRange() {
             var rowInRange = grid.length > rowIndex && rowIndex > -1;
             var cellInRange = grid[0].length > cellIndex && cellIndex > -1;
 
             return rowInRange && cellInRange;
         }
+
         var cells = [];
 
         var rowIndex = cell.y;
         var cellIndex = cell.x;
-        var shouldMove = false;
-
-        if (cell.state) {
-            cells.push(cell);
-            shouldMove = true;
-        }
+        var shouldMove = cell.state;
 
         while (shouldMove) {
             rowIndex = moveRow(rowIndex);
@@ -58,62 +58,86 @@ var gameLogicMaker = function () {
         return cells;
     }
 
-    function findEqualsInRow(grid, cell, max) {
-        var cells = [];
-        var row = grid[cell.y];
-        var shouldMove = true;
-        var cellIndex = 0;
+    function findEqualsInRow(grid, cell, config) {
+        var result = [cell];
+        var left;
+        var right;
 
-        while (shouldMove) {
-            if (row[cellIndex].state === cell.state) {
-                cells.push(row[cellIndex]);
-            } else {
-                cells = [];
-            }
+        left = findEquals(grid, cell, add, same);
 
-            cellIndex = add(cellIndex);
+        left.forEach(function (item) {
+            result.push(item);
+        });
 
-            shouldMove = cellIndex < row.length && cells.length < max;
+        if (result.length < config.winner) {
+            right = findEquals(grid, cell, subtract, same);
+
+            right.forEach(function (item) {
+                result.push(item);
+            });
         }
 
-        return cells;
+        return result;
     }
 
-    function findEqualsInColumn(grid, cell, max) {
-        var cells = [];
-        var shouldMove = true;
-        var rowIndex = 0;
-        var row;
+    function findEqualsInColumn(grid, cell, config) {
+        var result = [cell];
+        var down;
+        var up;
 
-        while (shouldMove) {
-            row = grid[rowIndex];
-            if (row[cell.x].state === cell.state) {
-                cells.push(row[cell.x]);
-            } else {
-                cells = [];
-            }
+        down = findEquals(grid, cell, same, add);
 
-            rowIndex = add(rowIndex);
+        down.forEach(function (item) {
+            result.push(item);
+        });
 
-            shouldMove = rowIndex < grid.length && cells.length < max;
+        if (result.length < config.winner) {
+            up = findEquals(grid, cell, same, subtract);
+
+            up.forEach(function (item) {
+                result.push(item);
+            });
         }
 
-        return cells;
+        return result;
     }
 
     function findEqualsInDiagonals(grid, cell, config) {
-        var result = checkDiagonal(grid, cell, add, add);
+        var result = [cell];
+        var downLeft;
+        var downRight;
+
+        var upLeft;
+        var upRight;
+
+        downLeft = findEquals(grid, cell, add, add);
+
+        downLeft.forEach(function (item) {
+            result.push(item);
+        });
 
         if (result.length < config.winner) {
-            result = checkDiagonal(grid, cell, add, subtract);
+            downRight = findEquals(grid, cell, add, subtract);
+
+            downRight.forEach(function (item) {
+                result.push(item);
+            });
         }
 
         if (result.length < config.winner) {
-            result = checkDiagonal(grid, cell, subtract, subtract);
+            upLeft = findEquals(grid, cell, subtract, add);
+
+            upLeft.forEach(function (item) {
+                result.push(item);
+            });
         }
 
         if (result.length < config.winner) {
-            result = checkDiagonal(grid, cell, subtract, add);
+            upRight = findEquals(grid, cell, subtract, subtract);
+
+            upRight.forEach(function (item) {
+                result.push(item);
+            });
         }
 
         return result;

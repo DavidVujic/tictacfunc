@@ -4,33 +4,23 @@ var logic = gameLogicMaker();
 
 var config = {
     winner: 3,
-    rows: 3,
-    columns: 3,
+    rows: 6,
+    columns: 6,
     boardWidth: 800,
-    playerOne: playerMaker(logic).create('Player X', 'X'),
-    playerTwo: playerMaker(logic).create('Player O', 'O')
+    players: [playerMaker(logic).create('Player X', 'X'), playerMaker(logic).create('Player O', 'O')]
 };
 
-var grid = gridMaker(config).create();
 var view = viewRenderMaker(config);
-var game = gameMaker(config, grid, logic, view);
+var game = gameMaker(config, logic, view);
+var grid = gridMaker(config).create();
 
 view.render(grid);
 
-var tableCells = document.querySelectorAll('.cell');
-var currentState = 'O';
+document.querySelector('#start-game').addEventListener('click', function () {
+    if (game.status() === 'finished') {
+        grid = gridMaker(config).create();
+        view.render(grid);
+    }
 
-for (var i = 0; i < tableCells.length; i += 1) {
-    tableCells[i].addEventListener('touchend', function (ev) {
-        var y = ev.target.id.substr(4, 1);
-        var x = ev.target.id.substr(11, 1);
-        currentState = currentState === 'O' ? 'X' : 'O';
-        var slot = grid[y][x];
-        slot.state = currentState;
-        game.onSlot(slot);
-    });
-}
-
-var startBtn = document.querySelector('#start-game');
-
-startBtn.addEventListener('click', game.play);
+    game.play(grid);
+});

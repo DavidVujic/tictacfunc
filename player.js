@@ -17,11 +17,11 @@ var playerMaker = function (logic) {
 
             var slotIndex = getRandomIntInclusive(0, emptySlots.length - 1);
 
-            var slot = emptySlots[slotIndex];
+            var cell = emptySlots[slotIndex];
 
-            slot.state = val;
+            cell.state = val;
 
-            return slot;
+            return cell;
         }
 
         function won() {

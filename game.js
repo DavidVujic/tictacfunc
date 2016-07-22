@@ -1,42 +1,61 @@
 /* exported gameMaker */
 
-var gameMaker = function (config, grid, logic, view) {
+var gameMaker = function (config, logic, view) {
     var timerInterval;
+    var status = 'stopped';
+    var currentGrid;
     var currentPlayer;
 
-    function playGame() {
+    function play(grid) {
+        function getRandom() {
+            return Math.round(Math.random());
+        }
+
+        currentPlayer = config.players[getRandom()];
+        currentGrid = grid;
+        status = 'running'
         timerInterval = setInterval(randomPlay, 1000);
     }
 
-    function stopGame() {
+    function stop() {
+        status = 'finished';
         window.clearInterval(timerInterval);
     }
 
-    function finishGame(slots) {
+    function finish(slots) {
         var winner;
+        var i;
 
         if (slots) {
-            winner = slots[0].state === config.playerOne.val ? config.playerOne : config.playerTwo;
+            for (i = 0; i < config.players.length; i += 1) {
+                if (slots[0].state === config.players[i].val) {
+                    winner = config.players[i];
+                }
+            }
         }
 
-        stopGame();
+        stop();
 
         view.renderResult(winner);
     }
 
     function randomPlay() {
-        currentPlayer = currentPlayer === config.playerOne ? config.playerTwo : config.playerOne;
+        function toggleCurrentPlayer() {
+            currentPlayer = currentPlayer === config.players[0] ? config.players[1] : config.players[0];
+        }
 
-        var slot = currentPlayer.play(grid);
+        toggleCurrentPlayer();
 
-        if (!slot) {
-            finishGame();
+        var cell = currentPlayer.play(currentGrid);
+
+        if (!cell) {
+            finish();
         } else {
-            onSlot(slot);
+            onMove(cell);
         }
     }
 
-    function onSlot(slot) {
+    function onMove(cell) {
         function isWinner(cells) {
             return cells.length === config.winner;
         }
@@ -46,52 +65,41 @@ var gameMaker = function (config, grid, logic, view) {
                 view.renderCell(c, true);
             });
 
-            finishGame(cells);
+            finish(cells);
         }
 
-        view.renderCell(slot);
+        view.renderCell(cell);
 
-        var inRow = logic.findEqualsInRow(grid, slot, config.winner);
+        var inRow = logic.findEqualsInRow(currentGrid, cell, config);
 
         if (isWinner(inRow)) {
             renderWinnerRow(inRow);
             return;
         }
 
-        var inColumn = logic.findEqualsInColumn(grid, slot, config.winner);
+        var inColumn = logic.findEqualsInColumn(currentGrid, cell, config);
 
         if (isWinner(inColumn)) {
             renderWinnerRow(inColumn);
             return;
         }
 
-        var i;
-        var j;
-        var isFinished = false;
+        var inDiagonal = logic.findEqualsInDiagonals(currentGrid, cell, config);
 
-        for (i = 0; i < grid.length; i += 1) {
-
-            if (isFinished) {
-                break;
-            }
-            var row = grid[i];
-
-            for (j = 0; j < row.length; j += 1) {
-                var cell = row[j];
-                var inDiagonal = logic.findEqualsInDiagonals(grid, cell, config);
-                if (isWinner(inDiagonal)) {
-                    renderWinnerRow(inDiagonal);
-                    isFinished = true;
-                    break;
-                }
-            }
+        if (isWinner(inDiagonal)) {
+            renderWinnerRow(inDiagonal);
+            return;
         }
     }
 
+    function currentStatus() {
+        return status;
+    }
+
     return {
-        play: playGame,
-        finish: finishGame,
+        play: play,
+        finish: finish,
         randomPlay: randomPlay,
-        onSlot: onSlot
+        status: currentStatus
     };
 };
