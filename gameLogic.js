@@ -91,40 +91,42 @@ var gameLogicMaker = function () {
 
     function findEqualsInDiagonals(grid, cell, config) {
         var result = [cell];
-        var downLeft;
-        var downRight;
+        var leftDown;
+        var rightDown;
 
-        var upLeft;
-        var upRight;
+        var leftUp;
+        var rightUp;
 
-        downLeft = findEquals(grid, cell, add, add);
+        rightDown = findEquals(grid, cell, add, add);
 
-        downLeft.forEach(function (item) {
+        rightDown.forEach(function (item) {
             result.push(item);
         });
 
         if (result.length < config.winner) {
-            downRight = findEquals(grid, cell, add, subtract);
+            leftUp = findEquals(grid, cell, subtract, subtract);
 
-            downRight.forEach(function (item) {
+            leftUp.forEach(function (item) {
                 result.push(item);
             });
         }
 
         if (result.length < config.winner) {
-            upLeft = findEquals(grid, cell, subtract, add);
+            result = [cell];
 
-            upLeft.forEach(function (item) {
+            leftDown = findEquals(grid, cell, subtract, add);
+
+            leftDown.forEach(function (item) {
                 result.push(item);
             });
-        }
 
-        if (result.length < config.winner) {
-            upRight = findEquals(grid, cell, subtract, subtract);
+            if (result.length < config.winner) {
+                rightUp = findEquals(grid, cell, add, subtract);
 
-            upRight.forEach(function (item) {
-                result.push(item);
-            });
+                rightUp.forEach(function (item) {
+                    result.push(item);
+                });
+            }
         }
 
         return result;

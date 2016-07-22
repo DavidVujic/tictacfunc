@@ -2,8 +2,8 @@
 
 var config = {
     winner: 3,
-    rows: 6,
-    columns: 6,
+    rows: 3,
+    columns: 3,
     boardWidth: 800,
     players: [playerMaker().create('Player X', 'X'), playerMaker().create('Player O', 'O')]
 };
