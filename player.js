@@ -1,15 +1,26 @@
 /* exported playerMaker */
 
-var playerMaker = function (logic) {
+var playerMaker = function () {
+    function findEmptySlots(grid) {
+        var cells = [];
+        grid.forEach(function (row) {
+            row.forEach(function (cell) {
+                if (!cell.state) {
+                    cells.push(cell);
+                }
+            });
+        });
+
+        return cells;
+    }
+
+    function getRandomIntInclusive(min, max) {
+        return Math.floor(Math.random() * (max - min + 1)) + min;
+    }
+
     function create(name, val) {
-        var gamesWon = 0;
-
-        function getRandomIntInclusive(min, max) {
-            return Math.floor(Math.random() * (max - min + 1)) + min;
-        }
-
         function play(grid) {
-            var emptySlots = logic.findEmptySlots(grid);
+            var emptySlots = findEmptySlots(grid);
 
             if (emptySlots.length === 0) {
                 return;
@@ -24,17 +35,10 @@ var playerMaker = function (logic) {
             return cell;
         }
 
-        function won() {
-            gamesWon += 1;
-
-            return gamesWon;
-        }
-
         return {
             name: name,
             val: val,
-            play: play,
-            won: won
+            play: play
         };
     }
 

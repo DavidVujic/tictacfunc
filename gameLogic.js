@@ -45,19 +45,6 @@ var gameLogicMaker = function () {
         return cells;
     }
 
-    function findEmptySlots(grid) {
-        var cells = [];
-        grid.forEach(function (row) {
-            row.forEach(function (cell) {
-                if (!cell.state) {
-                    cells.push(cell);
-                }
-            });
-        });
-
-        return cells;
-    }
-
     function findEqualsInRow(grid, cell, config) {
         var result = [cell];
         var left;
@@ -144,7 +131,6 @@ var gameLogicMaker = function () {
     }
 
     return {
-        findEmptySlots: findEmptySlots,
         findEqualsInRow: findEqualsInRow,
         findEqualsInColumn: findEqualsInColumn,
         findEqualsInDiagonals: findEqualsInDiagonals

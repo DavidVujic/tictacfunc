@@ -1,16 +1,15 @@
 /* global gameLogicMaker, playerMaker, gridMaker, viewRenderMaker, gameMaker */
 
-var logic = gameLogicMaker();
-
 var config = {
     winner: 3,
     rows: 6,
     columns: 6,
     boardWidth: 800,
-    players: [playerMaker(logic).create('Player X', 'X'), playerMaker(logic).create('Player O', 'O')]
+    players: [playerMaker().create('Player X', 'X'), playerMaker().create('Player O', 'O')]
 };
 
 var view = viewRenderMaker(config);
+var logic = gameLogicMaker();
 var game = gameMaker(config, logic, view);
 var grid = gridMaker(config).create();
 
