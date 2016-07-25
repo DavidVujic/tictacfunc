@@ -1,25 +1,25 @@
 /* exported gameMaker */
 
 var gameMaker = function (config, logic, view) {
-    var timerInterval;
     var status = 'stopped';
     var currentGrid;
     var currentPlayer;
 
-    function play(grid) {
-        function getRandom() {
-            return Math.round(Math.random());
-        }
+    function toggleCurrentPlayer() {
+        currentPlayer = currentPlayer === config.players[0] ? config.players[1] : config.players[0];
+    }
 
-        currentPlayer = config.players[getRandom()];
+    function start(grid) {
         currentGrid = grid;
-        status = 'running'
-        timerInterval = setInterval(randomPlay, 1000);
+        status = 'running';
+
+        toggleCurrentPlayer();
+
+        currentPlayer.play(currentGrid);
     }
 
     function stop() {
         status = 'finished';
-        window.clearInterval(timerInterval);
     }
 
     function finish(slots) {
@@ -39,23 +39,7 @@ var gameMaker = function (config, logic, view) {
         view.renderResult(winner);
     }
 
-    function randomPlay() {
-        function toggleCurrentPlayer() {
-            currentPlayer = currentPlayer === config.players[0] ? config.players[1] : config.players[0];
-        }
-
-        toggleCurrentPlayer();
-
-        var cell = currentPlayer.play(currentGrid);
-
-        if (!cell) {
-            finish();
-        } else {
-            onMove(cell);
-        }
-    }
-
-    function onMove(cell) {
+    function update(cell) {
         function isWinner(cells) {
             return cells.length === config.winner;
         }
@@ -68,27 +52,31 @@ var gameMaker = function (config, logic, view) {
             finish(cells);
         }
 
-        view.renderCell(cell);
+        if (!cell) {
+            finish();
+        } else {
+            view.renderCell(cell);
 
-        var inRow = logic.findEqualsInRow(currentGrid, cell, config);
+            var inRow = logic.findEqualsInRow(currentGrid, cell, config);
 
-        if (isWinner(inRow)) {
-            renderWinnerRow(inRow);
-            return;
-        }
+            if (isWinner(inRow)) {
+                renderWinnerRow(inRow);
+                return;
+            }
 
-        var inColumn = logic.findEqualsInColumn(currentGrid, cell, config);
+            var inColumn = logic.findEqualsInColumn(currentGrid, cell, config);
 
-        if (isWinner(inColumn)) {
-            renderWinnerRow(inColumn);
-            return;
-        }
+            if (isWinner(inColumn)) {
+                renderWinnerRow(inColumn);
+                return;
+            }
 
-        var inDiagonal = logic.findEqualsInDiagonals(currentGrid, cell, config);
+            var inDiagonal = logic.findEqualsInDiagonals(currentGrid, cell, config);
 
-        if (isWinner(inDiagonal)) {
-            renderWinnerRow(inDiagonal);
-            return;
+            if (isWinner(inDiagonal)) {
+                renderWinnerRow(inDiagonal);
+                return;
+            }
         }
     }
 
@@ -97,9 +85,8 @@ var gameMaker = function (config, logic, view) {
     }
 
     return {
-        play: play,
-        finish: finish,
-        randomPlay: randomPlay,
+        start: start,
+        update: update,
         status: currentStatus
     };
 };

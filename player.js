@@ -1,38 +1,44 @@
 /* exported playerMaker */
 
 var playerMaker = function () {
-    function findEmptySlots(grid) {
-        var cells = [];
-        grid.forEach(function (row) {
-            row.forEach(function (cell) {
-                if (!cell.state) {
-                    cells.push(cell);
-                }
-            });
-        });
+    function create(name, val, jsonpCallbackName) {
+        function removeElement(selector) {
+            var element = document.querySelector(selector);
 
-        return cells;
-    }
-
-    function getRandomIntInclusive(min, max) {
-        return Math.floor(Math.random() * (max - min + 1)) + min;
-    }
-
-    function create(name, val) {
-        function play(grid) {
-            var emptySlots = findEmptySlots(grid);
-
-            if (emptySlots.length === 0) {
+            if (!element) {
                 return;
             }
 
-            var slotIndex = getRandomIntInclusive(0, emptySlots.length - 1);
+            document.body.removeChild(element);
+        }
 
-            var cell = emptySlots[slotIndex];
+        function createScriptTag(src) {
+            var elementId = 'temporary-jsonp-script-block';
 
-            cell.state = val;
+            removeElement('#' + elementId);
 
-            return cell;
+            var script = document.createElement('script');
+            script.id = elementId;
+            script.type = 'application/javascript';
+            script.src = src;
+
+            document.body.appendChild(script);
+        }
+
+        function makeJSONPcall(grid) {
+            var url = 'https://tictacfunc-backend-1383.appspot.com/play';
+            var game = window.encodeURIComponent(JSON.stringify({
+                grid: grid,
+                val: val
+            }));
+
+            var src = url + '?game=' + game + '&callback=' + jsonpCallbackName;
+            console.log(src);
+            createScriptTag(src);
+        }
+
+        function play(grid) {
+            makeJSONPcall(grid);
         }
 
         return {

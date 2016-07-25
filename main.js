@@ -1,11 +1,19 @@
 /* global gameLogicMaker, playerMaker, gridMaker, viewRenderMaker, gameMaker */
+/* exported playerMove */
+function playerMove(cell) {
+    console.log('move!');
+    //game.update(cell);
+}
+
+var awsLambda = playerMaker().create('AWS Lambda', 'X', 'playerMove');
+var azureFunctions = playerMaker().create('Unnamed robot', 'O', 'playerMove');
 
 var config = {
     winner: 3,
     rows: 3,
     columns: 3,
     boardWidth: 800,
-    players: [playerMaker().create('Player X', 'X'), playerMaker().create('Player O', 'O')]
+    players: [awsLambda, azureFunctions]
 };
 
 var view = viewRenderMaker(config);
@@ -21,5 +29,5 @@ document.querySelector('#start-game').addEventListener('click', function () {
         view.render(grid);
     }
 
-    game.play(grid);
+    game.start(grid);
 });
