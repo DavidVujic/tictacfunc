@@ -1,12 +1,17 @@
 /* global gameLogicMaker, playerMaker, gridMaker, viewRenderMaker, gameMaker */
 /* exported playerMove */
 function playerMove(cell) {
-    console.log('move!');
-    //game.update(cell);
+    var currentGrid = game.update(cell);
+
+    setTimeout(function () {
+        if (currentGrid && game.status() === 'running') {
+            game.play(currentGrid);
+        }
+    }, 500);
 }
 
-var awsLambda = playerMaker().create('AWS Lambda', 'X', 'playerMove');
-var azureFunctions = playerMaker().create('Unnamed robot', 'O', 'playerMove');
+var awsLambda = playerMaker('AWS Lambda', 'X', 'awslambda', 'playerMove');
+var azureFunctions = playerMaker('Unnamed robot', 'O', 'awslambda', 'playerMove');
 
 var config = {
     winner: 3,
@@ -29,5 +34,9 @@ document.querySelector('#start-game').addEventListener('click', function () {
         view.render(grid);
     }
 
-    game.start(grid);
+    game.play(grid);
+});
+
+document.querySelector('#stop-game').addEventListener('click', function () {
+    game.finish();
 });
