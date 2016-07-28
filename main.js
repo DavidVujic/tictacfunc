@@ -1,13 +1,14 @@
 /* global gameLogicMaker, playerMaker, gridMaker, viewRenderMaker, gameMaker */
 /* exported playerMove */
 function playerMove(cell) {
-    var currentGrid = game.update(cell);
+    var currentGrid = game.makeMove(cell);
 
-    setTimeout(function () {
-        if (currentGrid && game.status() === 'running') {
-            game.play(currentGrid);
-        }
-    }, 500);
+    if (game.isDone(currentGrid)) {
+        state = 'finished';
+        game.finish();
+    } else {
+        game.play(currentGrid);
+    }
 }
 
 var awsLambda = playerMaker('AWS Lambda', 'X', 'awslambda', 'playerMove');
@@ -26,13 +27,17 @@ var logic = gameLogicMaker();
 var game = gameMaker(config, logic, view);
 var grid = gridMaker(config).create();
 
+var state;
+
 view.render(grid);
 
 document.querySelector('#start-game').addEventListener('click', function () {
-    if (game.status() === 'finished') {
+    if (state === 'finished') {
         grid = gridMaker(config).create();
         view.render(grid);
     }
+
+    state = 'running';
 
     game.play(grid);
 });
