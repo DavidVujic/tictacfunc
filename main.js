@@ -4,7 +4,6 @@ function playerMove(cell) {
     var currentGrid = game.makeMove(cell);
 
     if (game.isDone(currentGrid)) {
-        state = 'finished';
         game.finish();
     } else {
         game.play(currentGrid);
@@ -27,17 +26,11 @@ var logic = gameLogicMaker();
 var game = gameMaker(config, logic, view);
 var grid = gridMaker(config).create();
 
-var state;
-
 view.render(grid);
 
 document.querySelector('#start-game').addEventListener('click', function () {
-    if (state === 'finished') {
-        grid = gridMaker(config).create();
-        view.render(grid);
-    }
-
-    state = 'running';
+    grid = gridMaker(config).create();
+    view.render(grid);
 
     game.play(grid);
 });
