@@ -11,7 +11,7 @@ function playerMove(cell) {
 }
 
 var awsLambda = playerMaker('AWS Lambda', 'X', 'awslambda', 'playerMove');
-var azureFunctions = playerMaker('Unnamed robot', 'O', 'awslambda', 'playerMove');
+var azureFunctions = playerMaker('Azure Functions', 'O', 'azurefunction', 'playerMove');
 
 var config = {
     winner: 3,
