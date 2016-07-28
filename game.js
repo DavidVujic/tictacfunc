@@ -3,6 +3,7 @@
 var gameMaker = function (config, logic, view) {
     var currentGrid;
     var currentPlayer;
+    var isPlaying = false;
 
     function toggleCurrentPlayer() {
         currentPlayer = currentPlayer === config.players[0] ? config.players[1] : config.players[0];
@@ -10,6 +11,7 @@ var gameMaker = function (config, logic, view) {
 
     function play(grid) {
         currentGrid = grid;
+        isPlaying = true;
 
         toggleCurrentPlayer();
 
@@ -17,6 +19,10 @@ var gameMaker = function (config, logic, view) {
     }
 
     function finish(cells) {
+        if (!isPlaying) {
+            return;
+        }
+
         var winner;
         var i;
 
@@ -29,6 +35,7 @@ var gameMaker = function (config, logic, view) {
         }
 
         view.renderResult(winner);
+        isPlaying = false;
     }
 
     function makeMove(cell) {
@@ -80,16 +87,18 @@ var gameMaker = function (config, logic, view) {
         }
     }
 
-    function isDone() {
+    function isDone(grid) {
         var hasEmptyCells = false;
         var x;
         var y;
 
-        for (x = 0; x < currentGrid.length; x += 1) {
-            for (y = 0; y < currentGrid[x].length; y += 1) {
-                if (!currentGrid[x][y].state) {
-                    hasEmptyCells = true;
-                    break;
+        if (grid) {
+            for (x = 0; x < grid.length; x += 1) {
+                for (y = 0; y < grid[x].length; y += 1) {
+                    if (!grid[x][y].state) {
+                        hasEmptyCells = true;
+                        break;
+                    }
                 }
             }
         }

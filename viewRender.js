@@ -1,6 +1,6 @@
 /* exported viewRenderMaker */
 
-var viewRenderMaker = function (config) {
+var viewRenderMaker = function (config, analytics) {
     function log(message) {
         document.querySelector('#logger-container').innerHTML = message;
     }
@@ -22,6 +22,8 @@ var viewRenderMaker = function (config) {
         } else {
             log('no winner.');
         }
+
+        analytics.send(winner);
     }
 
     function renderCell(cell, highlight) {
