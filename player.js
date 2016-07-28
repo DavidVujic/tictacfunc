@@ -37,6 +37,7 @@ var playerMaker = function (name, val, id, jsonpCallbackName) {
 
     return {
         name: name,
+        id: id,
         val: val,
         play: play
     };

@@ -13,7 +13,7 @@ var analysisMaker = function () {
 
     function send(winner) {
         var url = _tics.helper.getCurrentUrl();
-        var destination = _tics.helper.appendToUrl(url, (winner ? winner.name : 'nowinner'));
+        var destination = _tics.helper.appendToUrl(url, (winner ? winner.id : 'nowinner'));
 
         window.ga('send', 'pageview', destination);
     }
