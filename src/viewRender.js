@@ -1,27 +1,24 @@
 /* exported viewRenderMaker */
 
 var viewRenderMaker = function (config, analytics) {
-    function log(message) {
-        document.querySelector('#logger-container').innerHTML = message;
+    function renderScore(player) {
+        var selector = '[data-val-player-id="' + player.id + '"]';
+        var elm = document.querySelectorAll(selector)[0];
+        elm.innerHTML = player.getGamesWon();
     }
 
-    function createTableCell(cell, width, height, fontSize) {
-        var size = 'width:' + width + '%;height:' + height + '%;font-size:' + fontSize + 'px';
-        var elm = document.createElement('td');
+    function renderResultBoard() {
+        document.querySelector('#player-one-name').innerHTML = config.players[0].name;
+        document.querySelector('#player-two-name').innerHTML = config.players[1].name;
+        document.querySelector('#player-one-result').setAttribute('data-val-player-id', config.players[0].id);
+        document.querySelector('#player-two-result').setAttribute('data-val-player-id', config.players[1].id);
 
-        elm.id = 'row-' + cell.y + '-cell-' + cell.x;
-        elm.className = 'cell';
-        elm.setAttribute('style', size);
-
-        return elm;
+        renderScore(config.players[0]);
+        renderScore(config.players[1]);
     }
 
     function renderResult(winner) {
-        if (winner) {
-            log('winner: ' + winner.name);
-        } else {
-            log('no winner.');
-        }
+        renderScore(winner);
 
         analytics.send(winner);
     }
@@ -33,9 +30,9 @@ var viewRenderMaker = function (config, analytics) {
         elm.innerHTML = cell.state || '';
 
         if (highlight) {
-            elm.className = 'cell highlight';
+            elm.className = 'highlight';
         } else {
-            elm.className = 'cell';
+            elm.className = '';
         }
     }
 
@@ -46,23 +43,20 @@ var viewRenderMaker = function (config, analytics) {
     }
 
     function render(grid) {
-        var container = document.querySelector('#grid-container');
+        var container = document.querySelector('#board-area');
         removeChildren(container);
-        log('');
 
         var tbl = document.createElement('table');
+        tbl.id = 'grid-view';
         var tr;
         var td;
-        var tdWidth = Math.round((1 / grid[0].length) * 100);
-        var tdHeight = Math.round((1 / grid.length) * 100);
-
-        var fontSize = Math.round(config.boardWidth / grid[0].length) * 0.8;
 
         grid.forEach(function (row) {
             tr = document.createElement('tr');
 
             row.forEach(function (cell) {
-                td = createTableCell(cell, tdWidth, tdHeight, fontSize);
+                td = document.createElement('td');
+                td.id = 'row-' + cell.y + '-cell-' + cell.x;
                 tr.appendChild(td);
             });
 
@@ -70,6 +64,8 @@ var viewRenderMaker = function (config, analytics) {
         });
 
         container.appendChild(tbl);
+
+        renderResultBoard();
     }
 
     return {

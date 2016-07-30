@@ -1,21 +1,36 @@
 body {
     background-color: black;
-    color: greenyellow;
-    font-size: 5em;
+    color: white;
     font-family: courier;
 }
-table {
-    width: 800px;
+#tictacfuncarea {
+    width: 1000px;
     height: 800px;
+    // background-color: orange;
+}
+#console-area {
+    width: 34%;
+    height: 100%;
+    float: left;
+    margin-left: 1%;
+    padding-right: 5%;
+    color: lime;
+    font-size: 1.5em;
+    // background-color: darkgreen;
+}
+#board-area {
+    width: 60%;
+    height: 100%;
+    float: right;
+    // background-color: darkgray;
+}
+table#grid-view {
+    width: 85%;
+    height: 70%;
     border-collapse: collapse;
+    table-layout: fixed;
 }
-td {
-    padding: 0
-}
-button {
-    font-size: 0.5em;
-}
-.cell {
+table#grid-view td {
     margin: 0 0 0 0;
     padding: 0 0 0 0;
     background-color: black;
@@ -25,7 +40,20 @@ button {
     color: white;
     vertical-align: middle;
     text-align: center;
+    font-size: 7em;
+}
+article {
+    margin-bottom: 20%;
+}
+button {
+    background-color: black;
+    color: lime;
+    font-family: courier;
+    font-size: 1.5em;
+}
+.hidden {
+    visibility: hidden;
 }
 .highlight {
-    background-color: darkorange;
+    background-color: lime !important;
 }

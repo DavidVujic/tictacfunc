@@ -3,23 +3,48 @@
 <head>
     <title>Tic-Tac-Func</title>
     <link rel="stylesheet" type="text/css" href="tictacfunc.css">
-    <script src="libs/analytics.js"></script>
-    <script src="libs/tics.js"></script>
+    <script src="src/libs/googleanalytics.js"></script>
+    <script src="src/libs/tics.js"></script>
 </head>
 
 <body>
-    <div id="grid-container"></div>
-    <button id="start-game">Start game</button>
-    <button id="stop-game">Stop game</button>
-    <div id="logger-container" />
-    <script src="gameLogic.js"></script>
-    <script src="grid.js"></script>
-    <script src="game.js"></script>
-    <script src="player.js"></script>
-    <script src="viewRender.js"></script>
-    <script src="analysis.js"></script>
+    <div id="tictacfuncarea">
 
-    <script src="main.js"></script>
+        <section id="console-area">
+            <article id="greeting-area">
+            </article>
+            <article id="question-area"></article>
+            <article id="players-board" class="hidden">
+                <table>
+                    <tr>
+                        <th id="player-one-name"></th>
+                        <th>vs</th>
+                        <th id="player-two-name"></th>
+                    </tr>
+                    <tr>
+                        <td id="player-one-result">1</td>
+                        <td>&nbsp;</td>
+                        <td id="player-two-result">3</td>
+                    </tr>
+                </table>
+            </article>
+
+            <article id="user-actions" class="hidden">
+                <button id="start-game">Start game</button>
+            </article>
+        </section>
+
+        <section id="board-area" class="hidden"></section>
+    </div>
+
+    <script src="src/gameLogic.js"></script>
+    <script src="src/grid.js"></script>
+    <script src="src/game.js"></script>
+    <script src="src/player.js"></script>
+    <script src="src/viewRender.js"></script>
+    <script src="src/tracker.js"></script>
+
+    <script src="src/app.js"></script>
 </body>
 
 </html>

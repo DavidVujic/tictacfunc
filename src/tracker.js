@@ -1,6 +1,6 @@
 /* global _tics */
-/* exported analysisMaker */
-var analysisMaker = function () {
+/* exported trackerMaker */
+var trackerMaker = function () {
 
     _tics.gaProvider.init({
         account: 'UA-81483165-1',

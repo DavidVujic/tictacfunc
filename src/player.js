@@ -1,6 +1,8 @@
 /* exported playerMaker */
 
 var playerMaker = function (name, val, id, jsonpCallbackName) {
+    var gamesWon = 0;
+
     function removeElement(selector) {
         var element = document.querySelector(selector);
 
@@ -24,6 +26,14 @@ var playerMaker = function (name, val, id, jsonpCallbackName) {
         document.body.appendChild(script);
     }
 
+    function winner() {
+        gamesWon += 1;
+    }
+
+    function getGamesWon() {
+        return gamesWon;
+    }
+
     function play(grid) {
         var url = 'https://tictacfunc-backend-1383.appspot.com/play/' + id;
         var game = window.encodeURIComponent(JSON.stringify({
@@ -39,6 +49,8 @@ var playerMaker = function (name, val, id, jsonpCallbackName) {
         name: name,
         id: id,
         val: val,
-        play: play
+        play: play,
+        winner: winner,
+        getGamesWon: getGamesWon
     };
 };

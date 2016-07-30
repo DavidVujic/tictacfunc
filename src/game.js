@@ -29,6 +29,7 @@ var gameMaker = function (config, logic, view) {
         if (cells) {
             for (i = 0; i < config.players.length; i += 1) {
                 if (cells[0].state === config.players[i].val) {
+                    config.players[i].winner();
                     winner = config.players[i];
                 }
             }
