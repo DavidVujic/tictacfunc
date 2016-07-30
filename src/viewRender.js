@@ -57,6 +57,7 @@ var viewRenderMaker = function (config, analytics) {
             row.forEach(function (cell) {
                 td = document.createElement('td');
                 td.id = 'row-' + cell.y + '-cell-' + cell.x;
+                td.innerHTML = '&nbsp;';
                 tr.appendChild(td);
             });
 
