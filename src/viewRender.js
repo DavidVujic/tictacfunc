@@ -1,6 +1,6 @@
 /* exported viewRenderMaker */
 
-var viewRenderMaker = function (config, analytics) {
+var viewRenderMaker = function (config, tracker) {
     function renderScore(player) {
         var selector = '[data-val-player-id="' + player.id + '"]';
         var elm = document.querySelectorAll(selector)[0];
@@ -10,6 +10,10 @@ var viewRenderMaker = function (config, analytics) {
     function renderResultBoard() {
         document.querySelector('#player-one-name').innerHTML = config.players[0].name;
         document.querySelector('#player-two-name').innerHTML = config.players[1].name;
+
+        document.querySelector('#player-one-val').innerHTML = config.players[0].val;
+        document.querySelector('#player-two-val').innerHTML = config.players[1].val;
+
         document.querySelector('#player-one-result').setAttribute('data-val-player-id', config.players[0].id);
         document.querySelector('#player-two-result').setAttribute('data-val-player-id', config.players[1].id);
 
@@ -20,7 +24,7 @@ var viewRenderMaker = function (config, analytics) {
     function renderResult(winner) {
         renderScore(winner);
 
-        analytics.send(winner);
+        tracker.send(winner);
     }
 
     function renderCell(cell, highlight) {

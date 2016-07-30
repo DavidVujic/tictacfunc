@@ -12,18 +12,17 @@ function playerMove(cell) {
     }
 }
 
-var playerOne = playerMaker('AWS Lambda', 'X', 'awslambda', 'playerMove');
-var playerTwo = playerMaker('Azure Functions', 'O', 'azurefunction', 'playerMove');
-
 var config = {
     winner: 3,
     rows: 3,
     columns: 3,
-    boardWidth: 800,
-    players: [playerOne, playerTwo]
+    players: [
+        playerMaker('AWS Lambda', 'X', 'awslambda', 'playerMove'),
+        playerMaker('Azure Functions', 'O', 'azurefunction', 'playerMove')
+    ]
 };
 
-var view = viewRenderMaker(config, trackerMaker());
+var view = viewRenderMaker(config, trackerMaker(config));
 var logic = gameLogicMaker();
 
 game = gameMaker(config, logic, view);

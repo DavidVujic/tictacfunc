@@ -25,6 +25,9 @@ body {
     float: right;
     // background-color: darkgray;
 }
+th {
+  text-align: left;
+}
 table#grid-view {
     width: 85%;
     height: 70%;
