@@ -1,11 +1,11 @@
 /* exported viewRenderMaker */
 
-var viewRenderMaker = function (config, tracker) {
+var viewRenderMaker = function (config, tracker, typeWriter, toggler) {
     var playingIntervalId;
-    var startGameElement;
+    var indicator;
 
     function renderMessage(winner) {
-        var message = '';
+        var message = winner ? 'winner: ' + winner.name : ' no winner';
         document.querySelector('#game-message').innerHTML = message;
     }
 
@@ -34,8 +34,8 @@ var viewRenderMaker = function (config, tracker) {
             renderScore(winner);
         }
 
-        stopToggle(startGameElement, playingIntervalId);
-        startGameElement.innerHTML = startGameElement.getAttribute('data-val-original-text');
+        toggler.stopToggle(indicator, playingIntervalId);
+        indicator.innerHTML = indicator.getAttribute('data-val-original-text');
         tracker.send(winner);
     }
 
@@ -86,94 +86,40 @@ var viewRenderMaker = function (config, tracker) {
         renderResultBoard();
     }
 
-    function init(startElement) {
-        startGameElement = startElement;
-        var greeting = "Greetings Dr Function.";
-        var question = 'How about a nice game of Tic-Tac-Func?';
-        var details = 'Human players: zero.';
-        var i = 0;
+    function init(indicatorElement) {
+        indicator = indicatorElement;
+        var greeting = document.querySelector('#greeting-area');
+        var question = document.querySelector('#question-area');
+        var details = document.querySelector('#player-details');
 
-        function writeGreeting() {
-            document.querySelector('#greeting-area').innerHTML += greeting[i];
-            i += 1;
+        setTimeout(function () {
+            typeWriter.write(greeting, function () {
 
-            if (i < greeting.length) {
-                setTimeout(writeGreeting, 50);
-            } else {
-                i = 0;
-                setTimeout(writeQuestion, 1000);
-
-            }
-        }
-
-        function writeQuestion() {
-            document.querySelector('#question-area').innerHTML += question[i];
-            i += 1;
-
-            if (i < question.length) {
-                setTimeout(writeQuestion, 50);
-            } else {
-                i = 0;
                 setTimeout(function () {
-                    document.querySelector('#players-board').setAttribute('class', '');
-                    document.querySelector('#user-actions').setAttribute('class', '');
+                    typeWriter.write(question, function () {
+                        setTimeout(function () {
+                            toggler.toggleCss(document.querySelector('#players-board'), 'hidden');
+                            toggler.toggleCss(document.querySelector('#user-actions'), 'hidden');
+                            toggler.toggleCss(document.querySelector('#board-area'), 'hidden');
 
-                    setTimeout(function () {
-                        document.querySelector('#board-area').setAttribute('class', '');
-                        setTimeout(writeDetails, 500);
-                    }, 500);
-                }, 500);
-            }
-        }
+                            setTimeout(function () {
+                                typeWriter.write(details);
+                            }, 1200);
 
-        function writeDetails() {
-            document.querySelector('#player-details').innerHTML += details[i];
-            i += 1;
+                        }, 500);
+                    });
+                }, 1000);
 
-            if (i < details.length) {
-                setTimeout(writeDetails, 50);
-            }
-        }
+            });
+        }, 1000);
 
-        setTimeout(writeGreeting, 1000);
+        indicator.addEventListener('click', function () {
+            indicator.setAttribute('data-val-original-text', indicator.innerHTML);
+            indicator.innerHTML = indicator.getAttribute('data-val-disabled-text');
 
-        startGameElement.addEventListener('click', function () {
-            startGameElement.setAttribute('data-val-original-text', startGameElement.innerHTML);
-            startGameElement.innerHTML = startGameElement.getAttribute('data-val-disabled-text');
-
-            playingIntervalId = toggleInfinite(startGameElement, 'hidden');
+            playingIntervalId = toggler.toggleCssInfinite(indicator, 'hidden');
         });
     }
-
-    function toggleCss(elm, val) {
-        var css = elm.className.split(' ');
-        var index = css.indexOf(val);
-
-        if (index === -1) {
-            css.push(val);
-        } else {
-            css.splice(index, 1);
-        }
-
-        elm.className = css.join(' ');
-    }
-
-    function toggleInfinite(elm, val) {
-        elm.setAttribute('data-val-original-css', elm.className);
-
-        return setInterval(function () {
-            toggleCss(elm, val);
-        }, 500);
-    }
-
-    function stopToggle(elm, id) {
-        if (!id) {
-            return;
-        }
-        clearInterval(id);
-        elm.className = elm.getAttribute('data-val-original-css');
-    }
-
 
     return {
         init: init,

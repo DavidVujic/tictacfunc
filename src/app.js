@@ -1,4 +1,4 @@
-/* global trackerMaker, gameLogicMaker, playerMaker, gridMaker, viewRenderMaker, gameMaker */
+/* global trackerMaker, gameLogicMaker, playerMaker, gridMaker, viewRenderMaker, gameMaker, typeWriterMaker */
 /* exported playerMove */
 var game;
 var startButton = document.querySelector('#start-game');
@@ -23,7 +23,7 @@ var config = {
     ]
 };
 
-var view = viewRenderMaker(config, trackerMaker(config));
+var view = viewRenderMaker(config, trackerMaker(config), typeWriterMaker(), togglerMaker());
 var logic = gameLogicMaker();
 
 game = gameMaker(config, logic, view);
