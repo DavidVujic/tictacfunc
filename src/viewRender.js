@@ -54,6 +54,7 @@ var viewRenderMaker = function (config, tracker) {
 
     function removeChildren(parent) {
         while (parent.hasChildNodes()) {
+            parent.lastChild.style.visibility = 'hidden';
             parent.removeChild(parent.lastChild);
         }
     }
