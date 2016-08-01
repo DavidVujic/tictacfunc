@@ -1,6 +1,6 @@
 /* exported gameMaker */
 
-var gameMaker = function (config, logic, view) {
+var gameMaker = function (config, logic, view, scoreKeeper) {
     var currentGrid;
     var currentPlayer;
     var isPlaying = false;
@@ -20,6 +20,7 @@ var gameMaker = function (config, logic, view) {
 
     function finish(cells) {
         if (!isPlaying) {
+            scoreKeeper.result(winner);
             view.renderResult();
             return;
         }
@@ -30,13 +31,13 @@ var gameMaker = function (config, logic, view) {
         if (cells) {
             for (i = 0; i < config.players.length; i += 1) {
                 if (cells[0].state === config.players[i].val) {
-                    config.players[i].winner();
                     winner = config.players[i];
                 }
             }
         }
 
-        view.renderResult(winner);
+        scoreKeeper.result(winner);
+        view.renderResult();
         isPlaying = false;
     }
 

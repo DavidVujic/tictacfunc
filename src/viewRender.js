@@ -1,6 +1,6 @@
 /* exported viewRenderMaker */
 
-var viewRenderMaker = function (config, tracker, typeWriter, toggler) {
+var viewRenderMaker = function (config, typeWriter, toggler, scoreKeeper) {
     var playingIntervalId;
     var indicator;
 
@@ -9,10 +9,16 @@ var viewRenderMaker = function (config, tracker, typeWriter, toggler) {
         document.querySelector('#game-message').innerHTML = message;
     }
 
-    function renderScore(player) {
-        var selector = '[data-val-player-id="' + player.id + '"]';
-        var elm = document.querySelectorAll(selector)[0];
-        elm.innerHTML = player.getGamesWon();
+    function renderScore() {
+        var score = scoreKeeper.score();
+        var selector;
+        var elm;
+
+        score.forEach(function (player) {
+            selector = '[data-val-player-id="' + player.id + '"]';
+            elm = document.querySelectorAll(selector)[0];
+            elm.innerHTML = player.gamesWon;
+        });
     }
 
     function renderResultBoard() {
@@ -25,18 +31,14 @@ var viewRenderMaker = function (config, tracker, typeWriter, toggler) {
         document.querySelector('#player-one-result').setAttribute('data-val-player-id', config.players[0].id);
         document.querySelector('#player-two-result').setAttribute('data-val-player-id', config.players[1].id);
 
-        renderScore(config.players[0]);
-        renderScore(config.players[1]);
+        renderScore();
     }
 
-    function renderResult(winner) {
-        if (winner) {
-            renderScore(winner);
-        }
+    function renderResult() {
+        renderScore();
 
         toggler.stopToggle(indicator, playingIntervalId);
         indicator.innerHTML = indicator.getAttribute('data-val-original-text');
-        tracker.send(winner);
     }
 
     function renderCell(cell, highlight) {

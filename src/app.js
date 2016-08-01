@@ -1,5 +1,14 @@
-/* global trackerMaker, gameLogicMaker, playerMaker, gridMaker, viewRenderMaker, gameMaker, typeWriterMaker */
+/* global trackerMaker,
+gameLogicMaker,
+playerMaker,
+gridMaker,
+viewRenderMaker,
+gameMaker,
+typeWriterMaker,
+togglerMaker,
+scoreKeeperMaker */
 /* exported playerMove */
+
 var game;
 var startButton = document.querySelector('#start-game');
 
@@ -22,11 +31,12 @@ var config = {
         playerMaker('Azure Functions', 'O', 'azurefunction', 'playerMove')
     ]
 };
+var scoreKeeper = scoreKeeperMaker(config, trackerMaker(config));
 
-var view = viewRenderMaker(config, trackerMaker(config), typeWriterMaker(), togglerMaker());
+var view = viewRenderMaker(config, typeWriterMaker(), togglerMaker(), scoreKeeper);
 var logic = gameLogicMaker();
 
-game = gameMaker(config, logic, view);
+game = gameMaker(config, logic, view, scoreKeeper);
 
 var grid = gridMaker(config).create();
 
