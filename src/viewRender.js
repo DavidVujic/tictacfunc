@@ -9,7 +9,7 @@ var viewRenderMaker = function (config, typeWriter, toggler, scoreKeeper) {
         document.querySelector('#game-message').innerHTML = message;
     }
 
-    function renderScore() {
+    function renderCurrentScore() {
         var score = scoreKeeper.score();
         var selector;
         var elm;
@@ -31,11 +31,11 @@ var viewRenderMaker = function (config, typeWriter, toggler, scoreKeeper) {
         document.querySelector('#player-one-result').setAttribute('data-val-player-id', config.players[0].id);
         document.querySelector('#player-two-result').setAttribute('data-val-player-id', config.players[1].id);
 
-        renderScore();
+        renderCurrentScore();
     }
 
     function renderResult() {
-        renderScore();
+        renderCurrentScore();
 
         toggler.stopToggle(indicator, playingIntervalId);
         indicator.innerHTML = indicator.getAttribute('data-val-original-text');

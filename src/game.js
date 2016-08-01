@@ -4,6 +4,7 @@ var gameMaker = function (config, logic, view, scoreKeeper) {
     var currentGrid;
     var currentPlayer;
     var isPlaying = false;
+    var done;
 
     function toggleCurrentPlayer() {
         currentPlayer = currentPlayer === config.players[0] ? config.players[1] : config.players[0];
@@ -109,10 +110,15 @@ var gameMaker = function (config, logic, view, scoreKeeper) {
         return !hasEmptyCells;
     }
 
+    function onFinish(callback) {
+        done = callback;
+    }
+
     return {
         play: play,
         finish: finish,
         makeMove: makeMove,
-        isDone: isDone
+        isDone: isDone,
+        onFinish: onFinish
     };
 };
