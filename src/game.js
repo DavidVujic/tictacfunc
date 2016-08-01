@@ -20,6 +20,7 @@ var gameMaker = function (config, logic, view) {
 
     function finish(cells) {
         if (!isPlaying) {
+            view.renderResult();
             return;
         }
 

@@ -1,6 +1,7 @@
 /* global trackerMaker, gameLogicMaker, playerMaker, gridMaker, viewRenderMaker, gameMaker */
 /* exported playerMove */
 var game;
+var startButton = document.querySelector('#start-game');
 
 function playerMove(cell) {
     var currentGrid = game.makeMove(cell);
@@ -29,10 +30,10 @@ game = gameMaker(config, logic, view);
 
 var grid = gridMaker(config).create();
 
-view.init();
+view.init(startButton);
 view.render(grid);
 
-document.querySelector('#start-game').addEventListener('click', function () {
+startButton.addEventListener('click', function () {
     grid = gridMaker(config).create();
     view.render(grid);
 

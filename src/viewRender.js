@@ -1,6 +1,14 @@
 /* exported viewRenderMaker */
 
 var viewRenderMaker = function (config, tracker) {
+    var playingIntervalId;
+    var startGameElement;
+
+    function renderMessage(winner) {
+        var message = '';
+        document.querySelector('#game-message').innerHTML = message;
+    }
+
     function renderScore(player) {
         var selector = '[data-val-player-id="' + player.id + '"]';
         var elm = document.querySelectorAll(selector)[0];
@@ -22,8 +30,12 @@ var viewRenderMaker = function (config, tracker) {
     }
 
     function renderResult(winner) {
-        renderScore(winner);
+        if (winner) {
+            renderScore(winner);
+        }
 
+        stopToggle(startGameElement, playingIntervalId);
+        startGameElement.innerHTML = startGameElement.getAttribute('data-val-original-text');
         tracker.send(winner);
     }
 
@@ -73,9 +85,11 @@ var viewRenderMaker = function (config, tracker) {
         renderResultBoard();
     }
 
-    function init() {
+    function init(startElement) {
+        startGameElement = startElement;
         var greeting = "Greetings Dr Function.";
         var question = 'How about a nice game of Tic-Tac-Func?';
+        var details = 'Human players: zero.';
         var i = 0;
 
         function writeGreeting() {
@@ -98,23 +112,73 @@ var viewRenderMaker = function (config, tracker) {
             if (i < question.length) {
                 setTimeout(writeQuestion, 50);
             } else {
+                i = 0;
                 setTimeout(function () {
                     document.querySelector('#players-board').setAttribute('class', '');
                     document.querySelector('#user-actions').setAttribute('class', '');
 
                     setTimeout(function () {
                         document.querySelector('#board-area').setAttribute('class', '');
+                        setTimeout(writeDetails, 500);
                     }, 500);
                 }, 500);
             }
         }
+
+        function writeDetails() {
+            document.querySelector('#player-details').innerHTML += details[i];
+            i += 1;
+
+            if (i < details.length) {
+                setTimeout(writeDetails, 50);
+            }
+        }
+
         setTimeout(writeGreeting, 1000);
+
+        startGameElement.addEventListener('click', function () {
+            startGameElement.setAttribute('data-val-original-text', startGameElement.innerHTML);
+            startGameElement.innerHTML = startGameElement.getAttribute('data-val-disabled-text');
+
+            playingIntervalId = toggleInfinite(startGameElement, 'hidden');
+        });
     }
+
+    function toggleCss(elm, val) {
+        var css = elm.className.split(' ');
+        var index = css.indexOf(val);
+
+        if (index === -1) {
+            css.push(val);
+        } else {
+            css.splice(index, 1);
+        }
+
+        elm.className = css.join(' ');
+    }
+
+    function toggleInfinite(elm, val) {
+        elm.setAttribute('data-val-original-css', elm.className);
+
+        return setInterval(function () {
+            toggleCss(elm, val);
+        }, 500);
+    }
+
+    function stopToggle(elm, id) {
+        if (!id) {
+            return;
+        }
+        clearInterval(id);
+        elm.className = elm.getAttribute('data-val-original-css');
+    }
+
 
     return {
         init: init,
         render: render,
         renderCell: renderCell,
-        renderResult: renderResult
+        renderResult: renderResult,
+        renderMessage: renderMessage
     };
 };
