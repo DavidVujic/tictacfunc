@@ -25,6 +25,9 @@ body {
     float: right;
     // background-color: darkgray;
 }
+table {
+  font-size: 1.5vw;
+}
 th {
   text-align: left;
 }
