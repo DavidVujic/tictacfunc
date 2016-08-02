@@ -32,7 +32,9 @@ var playerMaker = function (name, val, id, jsonpCallbackName) {
             val: val
         }));
 
-        var src = url + '?game=' + game + '&callback=' + jsonpCallbackName;
+        var timestamp = new Date().getTime();
+
+        var src = url + '?game=' + game + '&callback=' + jsonpCallbackName + '&t=' + timestamp;
         createScriptTag(src);
     }
 
