@@ -54,16 +54,8 @@ var viewRenderMaker = function (config, typeWriter, toggler, scoreKeeper) {
         }
     }
 
-    function removeChildren(parent) {
-        while (parent.hasChildNodes()) {
-            parent.lastChild.style.visibility = 'hidden';
-            parent.removeChild(parent.lastChild);
-        }
-    }
-
     function render(grid) {
         var container = document.querySelector('#board-area');
-        removeChildren(container);
 
         var tbl = document.createElement('table');
         tbl.id = 'grid-view';
@@ -123,11 +115,23 @@ var viewRenderMaker = function (config, typeWriter, toggler, scoreKeeper) {
         });
     }
 
+    function reset() {
+        var container = document.querySelector('#board-area');
+        var tdList = container.querySelectorAll('td');
+        var i;
+
+        for (i = 0; i < tdList.length; i += 1) {
+            tdList[i].innerHTML = '&nbsp;';
+            tdList[i].className = '';
+        }
+    }
+
     return {
         init: init,
         render: render,
         renderCell: renderCell,
         renderResult: renderResult,
-        renderMessage: renderMessage
+        renderMessage: renderMessage,
+        reset: reset
     };
 };

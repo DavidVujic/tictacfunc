@@ -24,7 +24,7 @@ function playerMove(cell) {
 
 function playGame() {
     grid = gridMaker(config).create();
-    view.render(grid);
+    view.reset();
 
     game.play(grid);
 }
