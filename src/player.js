@@ -18,7 +18,7 @@ var playerMaker = function (name, val, id, jsonpCallbackName) {
         removeElement('#' + elementId);
 
         var script = document.createElement('script');
-        script.id = elementId;
+        //script.id = elementId;
         script.type = 'application/javascript';
         script.src = src;
 
