@@ -4,7 +4,7 @@ body {
     font-family: courier;
 }
 a {
-  color: white;
+    color: white;
 }
 #tictacfuncarea {
     width: 100%;
@@ -12,11 +12,10 @@ a {
     // background-color: orange;
 }
 #console-area {
-    width: 34%;
+    width: 42vw;
     height: 100%;
     float: left;
     margin-left: 1%;
-    padding-right: 5%;
     color: lime;
     font-size: 1.8vw;
     text-transform: uppercase;
@@ -29,10 +28,10 @@ a {
     // background-color: darkgray;
 }
 table {
-  font-size: 1.5vw;
+    font-size: 1.5vw;
 }
 th {
-  text-align: left;
+    text-align: left;
 }
 table#grid-view {
     width: 85%;
@@ -53,13 +52,12 @@ table#grid-view td {
     font-size: 10vw;
 }
 article {
-    margin-bottom: 15%;
+    margin-bottom: 8%;
     height: 2.2vw;
 }
-
 article.footer {
-  margin-top: 10%;
-  font-size: 0.8vw;
+    margin-top: 10%;
+    font-size: 0.8vw;
 }
 button {
     background-color: black;
