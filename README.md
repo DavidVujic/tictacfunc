@@ -3,7 +3,7 @@
 
 Play the game at: https://davidvujic.github.io/tictacfunc
 
-This repo is the use interface part of Tic-Tac-Func: static client script, html, images and css files. The javascript code consumes a back end service hosted in a different domain, using jsonp calls.
+This repo is the user interface part of Tic-Tac-Func: static client script, html, images and css files. The javascript code consumes a back end service hosted in a different domain, using jsonp calls.
 
 Have a look at the back end repository: https://github.com/DavidVujic/tictacfunc-backend
 
