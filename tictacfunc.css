@@ -15,7 +15,7 @@ body {
     margin-left: 1%;
     padding-right: 5%;
     color: lime;
-    font-size: 2.2vw;
+    font-size: 1.8vw;
     text-transform: uppercase;
     // background-color: darkgreen;
 }
@@ -57,7 +57,7 @@ button {
     background-color: black;
     color: lime;
     font-family: courier;
-    font-size: 4vw;
+    font-size: 2.5vw;
 }
 .hidden {
     visibility: hidden;

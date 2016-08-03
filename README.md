@@ -1,5 +1,5 @@
 ### AWS Lambda vs Azure Functions
-### "- _How about a nice game of Tic-Tac-Func?_"
+### "- _Greetings Professor Function. How about a nice game of Tic-Tac-Func?_"
 
 Play the game at: https://davidvujic.github.io/tictacfunc
 
