@@ -6,7 +6,7 @@ body {
 #tictacfuncarea {
     width: 100%;
     height: 100%;
-    // background-color: orange;
+    background-color: orange;
 }
 #console-area {
     width: 34%;
@@ -17,13 +17,18 @@ body {
     color: lime;
     font-size: 1.8vw;
     text-transform: uppercase;
-    // background-color: darkgreen;
+    background-color: darkgreen;
 }
 #board-area {
     width: 50vw;
     height: 50vw;
     float: right;
-    // background-color: darkgray;
+    background-color: darkgray;
+}
+#footer-area {
+  display:block;
+  text-align: center;
+  background-color: yellow;
 }
 table {
   font-size: 1.5vw;
