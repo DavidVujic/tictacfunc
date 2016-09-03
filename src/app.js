@@ -29,18 +29,29 @@ function playGame() {
     game.play(grid);
 }
 
+var awsUrl = 'https://vdti63q4xl.execute-api.us-west-2.amazonaws.com/prod/play';
+var azureUrl = 'https://tictacfunc-player.azurewebsites.net/api/player';
+
 var config = {
     winner: 3,
     rows: 3,
     columns: 3,
     players: [
-        playerMaker('AWS Lambda', 'X', 'awslambda', 'playerMove'),
-        playerMaker('Azure Functions', 'O', 'azurefunction', 'playerMove')
+        playerMaker('AWS Lambda', 'X', 'awslambda', 'playerMove', awsUrl),
+        playerMaker('Azure Functions', 'O', 'azurefunction', 'playerMove', azureUrl)
     ],
     numberOfGamesToPlay: 4
 };
 
-var scoreKeeper = scoreKeeperMaker(config, trackerMaker(config));
+/* var tracker = {
+    send: function() {
+        return;
+    }
+}; */
+
+var tracker = trackerMaker(config);
+
+var scoreKeeper = scoreKeeperMaker(config, tracker);
 var view = viewRenderMaker(config, typeWriterMaker(), togglerMaker(), scoreKeeper);
 var logic = gameLogicMaker();
 
